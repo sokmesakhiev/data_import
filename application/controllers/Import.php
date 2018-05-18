@@ -16,15 +16,28 @@ class Import extends CI_Controller {
         $password      = $this->db->password;
         $database_name = $this->db->database;
 
-        $this->db->query("Drop database {$database_name}");
-        $this->db->query("Create database {$database_name}");
-
-        $cmd = "mysql -h {$server_name} -u {$username} -p{$password} {$database_name} < $restore_file";
+        $this->reset_database();
+        $cmd = "mysql -h {$server_name} -u {$username} -p {$password} {$database_name} < $restore_file";
         exec($cmd);
 	}
 
     public function pushing_data(){
-        $this->move_data("tblpersonal");
+        $this->config->load("table");
+        $table = $this->config->item("tables");
+        $errors = array()
+        foreach ($tables as $key => $table)
+        {
+            if($this->validate_table($key, $table)){
+
+            }
+            $this->move_data($key);
+        }
+        
+    }
+
+    public function validate_table($table_name, $table_properties){
+        $error = array()
+        $this->load->database()
     }
 
     public function move_data($table_name){
@@ -47,8 +60,7 @@ class Import extends CI_Controller {
     public function archive_record($archived_tablename,$row){
         $sql = "insert into $archived_tablename values(";
         $array_value = array();
-        foreach ($row as $key => $value)
-        {
+        foreach ($row as $key => $value){
             array_push($array_value, "'".$row[$key]."'");
         }
         $sql.= join(",", $array_value);
@@ -64,5 +76,16 @@ class Import extends CI_Controller {
         $response = curl_exec($curl);
         curl_close($curl);
         return $response;
+    }
+
+    public function reset_database(){
+        $this->load->database();
+        $this->config->load("table");
+        $table = $this->config->item("tables");
+        foreach ($tables as $key => $table)
+        {
+            $this->db->query("delete from $key");
+        }
+
     }
 }
