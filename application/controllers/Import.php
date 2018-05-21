@@ -5,7 +5,7 @@ class Import extends CI_Controller {
 
 	public function process($file_name)
 	{
-		// $this->restoreDatabaseTables($file_name);
+		$this->restoreDatabaseTables($file_name);
         $this->pushing_data();
 	}
 
@@ -48,13 +48,51 @@ class Import extends CI_Controller {
         $j = 0;
         while($j<(count($rows)))
         {
-            $this->archive_record($table_name,$rows[$j]);
+            $this->validate_record($table_name,$rows[$j]);
             $j = $j + 1;
         }
         
         //Once you archive, delete the record from original table
         // $sql = "Delete from tblpersonal where id=".$id;
         // mysql_query($sql);
+    }
+
+    public function validate_record($table_name, $row, $error){
+        $tables = $this->config->load("table");
+        foreach ($tables[$table_name] as $field){
+            foreach ($row as $key => $value){
+                unless validate_mandatory($field["mandatory"], $value){
+                    
+                }
+                unless validate_digit($field["min_digit"],$field["max_degit"],$value){
+
+                }
+                unless validate_time( $field){
+
+                }
+            }
+        }
+    }
+
+    public function validate_time($condition, $value){
+        if (trim($condition) != "")
+            return true
+        else
+            return true
+    }
+
+    public function validate_digit($min_digit, $max_degit, $value){
+        if(strlen($value) < $min_digit && strlen($value) > $max_degit )
+            return false;
+        else
+            return true;
+    }
+
+    public function validate_mandatory($mandatory, $value){
+        if($mandatory == true && ($value == NULL || trim($value) == ""))
+            return false;
+        else
+            return true;
     }
 
     public function archive_record($archived_tablename,$row){

@@ -4,7 +4,7 @@
 	$config["tables"] = array(		
 		"tbladdress" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
@@ -90,23 +90,25 @@
 		),       
 		"tblconfirm" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Vcctname" => array(
 				"mandatory" => true,
 				"condition" => "",
+				"min_digit" => 6,
+				"max_digit" => 9,
 				"type" => "text"
 			),
 			"VcctCode" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Dat" => array(
-				"mandatory" => true,
-				"condition" => "",
+				"mandatory" => false,
+				"condition" => array("operator" => ">=", "table" => "tblpersonal", "field" => "DateReg"),
 				"type" => "date"
 			),
 			"Result" => array(
@@ -115,7 +117,7 @@
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
@@ -123,56 +125,56 @@
 		),       
 		"tblcontact" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Phone" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Status" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),       
 		"tbldistrict" =>  array(
 			"Pid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Did" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DistrictEng" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DistrictKh" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),      
 		"tblfirsttest" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"CodeTest" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
@@ -192,289 +194,295 @@
 				"type" => "text"
 			),
 			"DatTest" => array(
-				"mandatory" => true,
-				"condition" => "",
+				"mandatory" => false,
+				"condition" => array("operator" => "<=", "table" => "tblpersonal", "field" => "DateReg"),
 				"type" => "date"
 			),
 			"OtherPlace" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),     
 		"tblhbc" =>  array(
 			"Hid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Hname" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Hphone" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),           
 		"tblhbccase" =>  array(
 			"Hid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"caseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DateReg" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),       
 		"tblhealth" =>  array(
 			"Hid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"HealthName" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ODname" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Province" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),        
 		"tbllabo" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"CD4" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Cd" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DatCD4" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			),
 			"ViralLoad" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DatViral" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),          
 		"tbllog" =>  array(
 			"Uid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"caseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Event" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Detail" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"dat" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			)
 		),           
 		"tblnamepreart" =>  array(
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Sevicename" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),    
 		"tblnote" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Da" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"Note" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),          
 		"tblpac" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"CodePac" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 9,
+				"max_digit" => 9,
 				"type" => "text"
 			),
 			"DaPac" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"Hospital" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"feeding" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DaContrim" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),           
 		"tblpactest" =>  array(
 			"CodePac" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"typetest" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"result" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"dat" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),       
 		"tblpchild" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ChildStatus" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"MotherStatus" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"McaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ClinicID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 7,
+				"max_digit" => 7,
 				"type" => "text"
 			),
 			"ARTnum" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 10,
+				"max_digit" => 10,
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),        
 		"tblpersonal" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
@@ -484,14 +492,14 @@
 				"type" => "date"
 			),
 			"Name" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Dob" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"Sex" => array(
 				"mandatory" => true,
@@ -499,93 +507,93 @@
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 		),      
 		"tblppregnancy" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"PregnanStatus" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ClinicID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ARTnum" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Site" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),    
 		"tblprovince" =>  array(
 			"Pid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ProvinceEng" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ProvinceKh" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),      
 		"tblpwdelivery" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Dhiv" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Ahiv" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Startarv" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Place" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Dadelivery" => array(
 				"mandatory" => true,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"Pacsyrup" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
@@ -595,228 +603,236 @@
 				"type" => "text"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),    
 		"tblpwpacend" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"CodePac" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 9,
+				"max_digit" => 9,
 				"type" => "text"
 			),
 			"Dat" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "date"
 			),
 			"Preart" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 7,
+				"max_digit" => 7,
 				"type" => "text"
 			),
 			"sitecode" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),      
 		"tblpwpregant" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"PMcode" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DaPreg" => array(
-				"mandatory" => true,
-				"condition" => "",
-				"type" => "text"
+				"mandatory" => false,
+				"condition" => array("operator" => "<", "table" => "tblpwpregant", "field" => "DaExPreg"),
+				"type" => "date"
 			),
 			"AgePreg" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DaExPreg" => array(
-				"mandatory" => true,
-				"condition" => "",
-				"type" => "text"
+				"mandatory" => false,
+				"condition" => array("operator" => ">", "table" => "tblpwpregant", "field" => "DaPreg"),
+				"type" => "date"
 			),
 			"Place" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),     
 		"tblregoi" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"DatReg" => array(
-				"mandatory" => true,
-				"condition" => "",
-				"type" => "text"
+				"mandatory" => false,
+				"condition" => array("operator" => ">", "table" => "tblpersonal", "field" => "DateReg"),
+				"type" => "date"
 			),
 			"Site" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"ClinicID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 6,
+				"max_digit" => 6,
 				"type" => "text"
 			),
 			"ART" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
+				"min_digit" => 10,
+				"max_digit" => 10,
 				"type" => "text"
 			),
 			"DaART" => array(
-				"mandatory" => true,
-				"condition" => "",
-				"type" => "text"
+				"mandatory" => false,
+				"condition" => array("operator" => "<=", "table" => "tblpersonal", "field" => "DateReg"),
+				"type" => "date"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),         
 		"tblstatus" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Status" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"da" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "date"
 			),
 			"code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),        
 		"tbltempact" =>  array(
 			"caseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Type" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),       
 		"tbluser" =>  array(
 			"CaseID" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"House"=> array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"	
 			),
 			"Street" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Village" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Commune" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"District" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Province" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Status" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Code" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),          
 		"tblvcctcode" =>  array(
 			"SiteCode" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"SiteName" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"OdName" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
 		),      
 		"tblvillage" =>  array(
 			"Cid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"Vid" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
 			"VillageEn" => array(
-				"mandatory" => true,
+				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			)
