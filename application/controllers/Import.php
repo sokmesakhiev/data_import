@@ -6,10 +6,11 @@ class Import extends CI_Controller {
 	public function process($file_name)
 	{
 		$this->restoreDatabaseTables($file_name);
-        $this->pushing_data();
+        $this->preparing_data();
 	}
 
 	public function restoreDatabaseTables($file_name){
+        $this->load->database();
         $restore_file  = $this->config->item("file_upload_url") . $file_name;
         $server_name   = $this->db->hostname;
         $username      = $this->db->username;
@@ -17,68 +18,121 @@ class Import extends CI_Controller {
         $database_name = $this->db->database;
 
         $this->reset_database();
-        $cmd = "mysql -h {$server_name} -u {$username} -p {$password} {$database_name} < $restore_file";
+        $cmd = "mysql -h {$server_name} -u {$username} -p{$password} {$database_name} < $restore_file";
         exec($cmd);
 	}
 
-    public function pushing_data(){
+    public function preparing_data(){
         $this->config->load("table");
-        $table = $this->config->item("tables");
-        $errors = array()
-        foreach ($tables as $key => $table)
+        $tables = $this->config->item("tables");
+        $error = array();
+        $dsn1 = 'mysqli://sokmesa:admin@localhost/acm';
+        $this->db1 = $this->load->database($dsn1, true);
+        foreach ($tables as $table_name => $table_properties)
         {
-            if($this->validate_table($key, $table)){
-
-            }
-            $this->move_data($key);
+            $error = $this->validate_table($table_name, $table_properties);
         }
-        
+        if(count($error) == 0){
+            foreach ($tables as $table_name => $table_properties){
+                $this->move_data($this->db1, $table_name, $error);
+            }  
+        }
+        else{
+            print_r($error);
+        }
     }
 
     public function validate_table($table_name, $table_properties){
-        $error = array()
-        $this->load->database()
-    }
-
-    public function move_data($table_name){
         $this->load->database();
         $sql="Select * from $table_name";
         $result=$this->db->query($sql);
         $rows=$result->result_array();
-        $j = 0;
-        while($j<(count($rows)))
-        {
-            $this->validate_record($table_name,$rows[$j]);
-            $j = $j + 1;
-        }
-        
-        //Once you archive, delete the record from original table
-        // $sql = "Delete from tblpersonal where id=".$id;
-        // mysql_query($sql);
+        $error = array();
+        foreach ($rows as $row) {
+            $error = $this->validate_record($table_name, $table_properties,$row,$error);
+        } 
+        return $error;
     }
 
-    public function validate_record($table_name, $row, $error){
-        $tables = $this->config->load("table");
-        foreach ($tables[$table_name] as $field){
+    public function move_data($db, $table_name, $error){
+        $sql="Select * from $table_name";
+        $result=$this->db->query($sql);
+        $rows=$result->result_array();
+        foreach ($rows as $row) {
+            $sql = $this->build_sql_insert($table_name, $row);
+            // echo($sql);
+            $db->query($sql);
+        }
+    }
+
+    public function validate_record($table_name, $table_properties, $row, $error){
+        foreach ($table_properties as $field){
+            if(isset($row["CaseID"])){
+                if(!isset($error[$row["CaseID"]]))
+                    $error[$row["CaseID"]] = array();
+            }
             foreach ($row as $key => $value){
-                unless validate_mandatory($field["mandatory"], $value){
-                    
+                $key_name = $table_name."-".$key;
+                
+                if(!$this->validate_mandatory($field["mandatory"], $value)){
+                    // echo("Validating mandatory field $key with value $value in table $table_name ". "\n");
+                    $error["CaseID"][$key_name] = "Field $key require value.";
                 }
-                unless validate_digit($field["min_digit"],$field["max_degit"],$value){
-
+                if(isset($field["min_digit"]) && isset($field["max_degit"]) && !$this->validate_digit($field["min_digit"],$field["max_degit"],$value)){
+                    // echo("Validating digit number field $key with value $value in table $table_name ". "\n");
+                    $error["CaseID"][$key_name] = "The number of digit field ".$key." is not in the range from". $field['min_digit'] ." to ".$field['max_degit']." degit.";
                 }
-                unless validate_time( $field){
+                if($field["condition"] != "" && isset($row["CaseID"]) && !$this->validate_time($row["CaseID"], $field["condition"], $value)){
+                    // echo("Validating compare condition field $key with value $value in table $table_name ". "\n");
+                    $ref_table_name = $field["condition"]["table"];
+                    $ref_field_name = $field["condition"]["field"];
+                    $operator = $field["condition"]["operator"];
+                    $error["CaseID"][$key_name] = $table_name ." with field ".$key." with value ".$value." should be ".$operator." to the field ".$ref_field_name." of table ".$ref_table_name." .";
+                }
+            }
+            if(isset($row["CaseID"]) && count($error[$row["CaseID"]]) == 0){
+                unset($error[$row["CaseID"]]);
+            }
 
+        }
+        return $error;
+    }
+
+    public function validate_time($CaseID, $condition, $value){
+        $this->load->db();
+        if (trim($condition) != ""){
+            $table_name = $condition["table"];
+            $field_name = $condition["field"];
+            $operator = $condition["operator"];
+            $result = $this->db->query("select * from $table_name where CaseID = $CaseID");
+            $rows=$result->result_array();
+            foreach($rows as $row)
+            {
+                switch ($operator) {
+                    case '<':
+                        return $value < $row[$field_name];
+                        break;
+                    case '<=':
+                        return $value <= $row[$field_name];
+                        break;
+                    case '>':
+                        return $value > $row[$field_name];
+                        break;
+                    case '>=':
+                        return $value >= $row[$field_name];
+                        break;
+                    case '=':
+                        return $value == $row[$field_name];
+                        break;
+                    default:
+                        return true;
+                        break;
                 }
             }
         }
-    }
-
-    public function validate_time($condition, $value){
-        if (trim($condition) != "")
-            return true
-        else
-            return true
+        else{
+            return true;
+        }
     }
 
     public function validate_digit($min_digit, $max_degit, $value){
@@ -95,7 +149,7 @@ class Import extends CI_Controller {
             return true;
     }
 
-    public function archive_record($archived_tablename,$row){
+    public function build_sql_insert($archived_tablename,$row){
         $sql = "insert into $archived_tablename values(";
         $array_value = array();
         foreach ($row as $key => $value){
@@ -119,7 +173,7 @@ class Import extends CI_Controller {
     public function reset_database(){
         $this->load->database();
         $this->config->load("table");
-        $table = $this->config->item("tables");
+        $tables = $this->config->item("tables");
         foreach ($tables as $key => $table)
         {
             $this->db->query("delete from $key");
