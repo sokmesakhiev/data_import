@@ -30,35 +30,39 @@ class Import extends CI_Controller {
         $this->db1 = $this->load->database($dsn1, true);
         foreach ($tables as $table_name => $table_properties)
         {
-            $error = $this->validate_table($table_name, $table_properties);
+            $error = $this->validate_table($table_name, $table_properties, $error);
         }
-        if(count($error) == 0){
-            foreach ($tables as $table_name => $table_properties){
-                $this->move_data($this->db1, $table_name, $error);
-            }  
-        }
-        else{
-            print_r($error);
-        }
+        $data = json_encode($error);
+        echo $data;
     }
 
-    public function validate_table($table_name, $table_properties){
+    public function import_data(){
+        $excludes = $_POST("excludes");
+        $tables = $this->config->item("tables");
+        foreach ($tables as $table_name => $table_properties){
+            $this->move_data($this->db1, $table_name, $error, $excludes);
+        }  
+    }
+
+    public function validate_table($table_name, $table_properties, $error){
         $this->load->database();
         $sql="Select * from $table_name";
         $result=$this->db->query($sql);
         $rows=$result->result_array();
-        $error = array();
         foreach ($rows as $row) {
             $error = $this->validate_record($table_name, $table_properties,$row,$error);
         } 
         return $error;
     }
 
-    public function move_data($db, $table_name, $error){
+    public function move_data($db, $table_name, $error, $excludes){
         $sql="Select * from $table_name";
         $result=$this->db->query($sql);
         $rows=$result->result_array();
         foreach ($rows as $row) {
+            if(isset($row["CaseID"]) and in_array($row["CaseID"], $excludes)){
+                continue;
+            }
             $sql = $this->build_sql_insert($table_name, $row);
             // echo($sql);
             $db->query($sql);
@@ -66,34 +70,34 @@ class Import extends CI_Controller {
     }
 
     public function validate_record($table_name, $table_properties, $row, $error){
-        foreach ($table_properties as $field){
-            if(isset($row["CaseID"])){
-                if(!isset($error[$row["CaseID"]]))
-                    $error[$row["CaseID"]] = array();
+        if(isset($row["CaseID"])){
+            if(!isset($error[$row["CaseID"]])){
+                $error[$row["CaseID"]] = array();
             }
+        }
+        foreach ($table_properties as $field){
             foreach ($row as $key => $value){
                 $key_name = $table_name."-".$key;
                 
-                if(!$this->validate_mandatory($field["mandatory"], $value)){
-                    // echo("Validating mandatory field $key with value $value in table $table_name ". "\n");
-                    $error["CaseID"][$key_name] = "Field $key require value.";
+                if($this->validate_mandatory($field["mandatory"], $value) == false){
+                    // echo("Validating mandatory failed field $key with value $value in table $table_name ". "<br />");
+                    $error[$row["CaseID"]][$key_name] = "Field $key in table $table_name is missing value.";
                 }
-                if(isset($field["min_digit"]) && isset($field["max_degit"]) && !$this->validate_digit($field["min_digit"],$field["max_degit"],$value)){
-                    // echo("Validating digit number field $key with value $value in table $table_name ". "\n");
-                    $error["CaseID"][$key_name] = "The number of digit field ".$key." is not in the range from". $field['min_digit'] ." to ".$field['max_degit']." degit.";
+
+                if(isset($field["min_digit"]) && isset($field["max_degit"]) && $this->validate_digit($field["min_digit"],$field["max_degit"],$value) == false){
+                    $error[$row["CaseID"]][$key_name] = "The number of digit field ".$key." in table $table_name is not in the range from". $field['min_digit'] ." to ".$field['max_degit']." degit.";
                 }
-                if($field["condition"] != "" && isset($row["CaseID"]) && !$this->validate_time($row["CaseID"], $field["condition"], $value)){
-                    // echo("Validating compare condition field $key with value $value in table $table_name ". "\n");
+                if($field["condition"] != "" && isset($row["CaseID"]) && !$this->validate_time($row["CaseID"], $field["condition"], $value) == false){
                     $ref_table_name = $field["condition"]["table"];
                     $ref_field_name = $field["condition"]["field"];
                     $operator = $field["condition"]["operator"];
-                    $error["CaseID"][$key_name] = $table_name ." with field ".$key." with value ".$value." should be ".$operator." to the field ".$ref_field_name." of table ".$ref_table_name." .";
+                    $error[$row["CaseID"]][$key_name] = $table_name ." with field ".$key." with value ".$value." should be ".$operator." to the field ".$ref_field_name." of table ".$ref_table_name." .";
                 }
             }
-            if(isset($row["CaseID"]) && count($error[$row["CaseID"]]) == 0){
-                unset($error[$row["CaseID"]]);
-            }
+        }
 
+        if(isset($row["CaseID"]) && count($error[$row["CaseID"]]) == 0){
+            unset($error[$row["CaseID"]]);
         }
         return $error;
     }
@@ -137,9 +141,9 @@ class Import extends CI_Controller {
 
     public function validate_digit($min_digit, $max_degit, $value){
         if(strlen($value) < $min_digit && strlen($value) > $max_degit )
-            return false;
-        else
             return true;
+        else
+            return false;
     }
 
     public function validate_mandatory($mandatory, $value){
@@ -179,5 +183,21 @@ class Import extends CI_Controller {
             $this->db->query("delete from $key");
         }
 
+    }
+    public function upload_info(){
+        $this->load->database();
+        $this->config->load("table");
+        $tables = $this->config->item("tables");
+        $number_table = count($tables);
+        $table_record = array();
+        $total = 0;
+        foreach ($tables as $key => $table)
+        {
+            $count = $this->db->query("select count(*) as total from $key");
+            $table_record[$key] = $count->result_array();
+            $total = $total +  $table_record[$key][0]["total"];
+        }
+        $table_record["total"] = $total;
+        echo json_encode($table_record);
     }
 }
