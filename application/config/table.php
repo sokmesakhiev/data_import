@@ -784,37 +784,22 @@
 			)
 		),       
 		"tbluser" =>  array(
-			"CaseID" => array(
+			"Uid" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "integer"
 			),
-			"House"=> array(
+			"UserName"=> array(
 				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"	
 			),
-			"Street" => array(
+			"Pass" => array(
 				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
 			),
-			"Village" => array(
-				"mandatory" => false,
-				"condition" => "",
-				"type" => "text"
-			),
-			"Commune" => array(
-				"mandatory" => false,
-				"condition" => "",
-				"type" => "text"
-			),
-			"District" => array(
-				"mandatory" => false,
-				"condition" => "",
-				"type" => "text"
-			),
-			"Province" => array(
+			"FullName" => array(
 				"mandatory" => false,
 				"condition" => "",
 				"type" => "text"
@@ -822,12 +807,7 @@
 			"Status" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
-			),
-			"Code" => array(
-				"mandatory" => false,
-				"condition" => "",
-				"type" => "text"
+				"type" => "integer"
 			)
 		),          
 		"tblvcctcode" =>  array(

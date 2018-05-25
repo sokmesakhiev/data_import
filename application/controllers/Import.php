@@ -26,8 +26,7 @@ class Import extends CI_Controller {
         $this->config->load("table");
         $tables = $this->config->item("tables");
         $error = array();
-        $dsn1 = 'mysqli://sokmesa:admin@localhost/acm';
-        $this->db1 = $this->load->database($dsn1, true);
+        
         foreach ($tables as $table_name => $table_properties)
         {
             $error = $this->validate_table($table_name, $table_properties, $error);
@@ -36,12 +35,19 @@ class Import extends CI_Controller {
         echo $data;
     }
 
-    public function import_data(){
-        $excludes = $_POST("excludes");
+    public function import_data($table_name){
+        $excluded_case_ids = $_POST("excluded_case_ids");
         $tables = $this->config->item("tables");
-        foreach ($tables as $table_name => $table_properties){
-            $this->move_data($this->db1, $table_name, $error, $excludes);
-        }  
+        $restore_file  = $this->config->item("file_upload_url") . $file_name;
+        $server_name   = $this->db->hostname;
+        $username      = $this->db->username;
+        $password      = $this->db->password;
+        $database_name = 'acm';
+        $dsn1 = 'mysqli://$username:$password@server_name/$database_name';
+        $this->db1 = $this->load->database($dsn1, true);
+        $table_properties = $tables[$table_name];
+        $this->move_data($this->db1, $table_name, $excluded_case_ids);
+
     }
 
     public function validate_table($table_name, $table_properties, $error){
@@ -55,12 +61,12 @@ class Import extends CI_Controller {
         return $error;
     }
 
-    public function move_data($db, $table_name, $error, $excludes){
+    public function move_data($db, $table_name, $excluded_case_ids){
         $sql="Select * from $table_name";
         $result=$this->db->query($sql);
         $rows=$result->result_array();
         foreach ($rows as $row) {
-            if(isset($row["CaseID"]) and in_array($row["CaseID"], $excludes)){
+            if(isset($row["CaseID"]) and in_array($row["CaseID"], $excluded_case_ids)){
                 continue;
             }
             $sql = $this->build_sql_insert($table_name, $row);
@@ -154,10 +160,20 @@ class Import extends CI_Controller {
     }
 
     public function build_sql_insert($archived_tablename,$row){
+        $this->config->load("table");
+        $this->config->load("key");
+        $tables = $this->config->item("tables");
+        $encrypt_key = $this->config->item("secure_key");
         $sql = "insert into $archived_tablename values(";
         $array_value = array();
         foreach ($row as $key => $value){
-            array_push($array_value, "'".$row[$key]."'");
+            if($tables[$archived_tablename][$key]["encrypt"]){
+                $encrypted_value = $this->encrypt($value, $encrypt_key);
+                array_push($array_value, "'".$encrypted_value."'");
+            }
+            else{
+                array_push($array_value, "'".$row[$key]."'");
+            }
         }
         $sql.= join(",", $array_value);
         $sql.=")";
@@ -190,10 +206,16 @@ class Import extends CI_Controller {
         $tables = $this->config->item("tables");
         $number_table = count($tables);
         $table_record = array();
+        $excluded_case_ids = $_POST["excluded_case_ids"];
         $total = 0;
         foreach ($tables as $key => $table)
         {
-            $count = $this->db->query("select count(*) as total from $key");
+            if(isset($table["CaseID"])){
+                $count = $this->db->query("select count(*) as total from $key where CaseID not in ($excluded_case_ids)");
+            }
+            else{
+                $count = $this->db->query("select count(*) as total from $key");
+            }
             $table_record[$key] = $count->result_array();
             $total = $total +  $table_record[$key][0]["total"];
         }
