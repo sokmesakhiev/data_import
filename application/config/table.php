@@ -6,47 +6,56 @@
 			"CaseID" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"House" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Street" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Village" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Commune" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"District" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Province" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Status" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Code" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			)
 		),       
 		"tblcenter" =>  array(
@@ -104,7 +113,8 @@
 			"VcctCode" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Dat" => array(
 				"mandatory" => false,
@@ -127,22 +137,26 @@
 			"CaseID" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Phone" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Status" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Code" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			)
 		),       
 		"tbldistrict" =>  array(
@@ -176,7 +190,8 @@
 			"CodeTest" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"PlaceTest" => array(
 				"mandatory" => true,
@@ -384,7 +399,8 @@
 				"condition" => "",
 				"min_digit" => 9,
 				"max_digit" => 9,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"DaPac" => array(
 				"mandatory" => false,
@@ -416,7 +432,8 @@
 			"CodePac" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"typetest" => array(
 				"mandatory" => false,
@@ -465,14 +482,16 @@
 				"condition" => "",
 				"min_digit" => 7,
 				"max_digit" => 7,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"ARTnum" => array(
 				"mandatory" => false,
 				"condition" => "",
 				"min_digit" => 10,
 				"max_digit" => 10,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Code" => array(
 				"mandatory" => false,
@@ -494,7 +513,8 @@
 			"Name" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Dob" => array(
 				"mandatory" => false,
@@ -526,12 +546,14 @@
 			"ClinicID" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"ARTnum" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Site" => array(
 				"mandatory" => false,
@@ -619,7 +641,8 @@
 				"condition" => "",
 				"min_digit" => 9,
 				"max_digit" => 9,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"Dat" => array(
 				"mandatory" => false,
@@ -631,7 +654,8 @@
 				"condition" => "",
 				"min_digit" => 7,
 				"max_digit" => 7,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"sitecode" => array(
 				"mandatory" => false,
@@ -653,7 +677,8 @@
 			"PMcode" => array(
 				"mandatory" => false,
 				"condition" => "",
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"DaPreg" => array(
 				"mandatory" => false,
@@ -702,14 +727,16 @@
 				"condition" => "",
 				"min_digit" => 6,
 				"max_digit" => 6,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"ART" => array(
 				"mandatory" => false,
 				"condition" => "",
 				"min_digit" => 10,
 				"max_digit" => 10,
-				"type" => "text"
+				"type" => "text",
+				"encrypt" => true
 			),
 			"DaART" => array(
 				"mandatory" => false,
